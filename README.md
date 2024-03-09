@@ -6,6 +6,9 @@
 #Open the terminal in your root directory & to install the composer packages, run the following command
  - composer install
 
+#By running the following command, you will be able to create all database tables required for this project
+ - php artisan migrate
+
 #By running the following command, you will be able to get all the dependencies in your node_modules folder
  - yarn
 
