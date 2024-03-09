@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use App\Models\Task;
+use Carbon\Carbon;
 
 
 class TaskController extends Controller
@@ -81,7 +82,7 @@ class TaskController extends Controller
 
         $task->title = $request->title;
         $task->description = $request->description;
-        $task-> due_date = now();
+        $task-> due_date = Carbon::parse($request->due_date);
         $task->save();
 
         return response()->json(['task' => $task, 'message' => $message, 'status' => true]);

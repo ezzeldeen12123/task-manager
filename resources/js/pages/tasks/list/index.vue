@@ -4,6 +4,8 @@ import SnackbarComponent from '@core/components/SnackbarCustom.vue';
 import {
   requiredValidator
 } from '@core/utils/validators';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 import { VDataTable } from 'vuetify/labs/VDataTable';
 
 const tasksRequest = tasksApi()
@@ -125,7 +127,7 @@ const saveTask = id => {
       formData.append('id', taskID.value);
       formData.append('title', title.value);
       formData.append('description', description.value);
-      formData.append('due_date', dueDate.value);
+      formData.append('due_date', dueDate.value.toISOString());
 
       tasksRequest.saveTask(formData).then(response => {
         if(response.data['status']) {
@@ -233,7 +235,7 @@ watchEffect(fetchTasks)
           <template #item.actions="{ item }">
 
             <IconBtn v-if="item.raw.status==1" @click="actionDialog(item.raw.id, 'in-progress')" title="In Progress">
-              <VIcon style="color: #3abeff" size="20" icon="bx-x"/>
+              <VIcon style="color: #3abeff" size="20" icon="bx-reset"/>
             </IconBtn>
 
             <IconBtn v-else @click="actionDialog(item.raw.id, 'finished')" title="Finished">
@@ -246,7 +248,7 @@ watchEffect(fetchTasks)
 
             <IconBtn @click="actionDialog(item.raw.id, 'delete')" title="Delete">
               
-              <VIcon style="color: #FF3535" size="20" icon="bxs-x-circle"/>
+              <VIcon style="color: #FF3535" size="20" icon="bxs-trash"/>
             </IconBtn>
           </template>
         </VDataTable>
@@ -288,9 +290,16 @@ watchEffect(fetchTasks)
             </VCol>
           </VRow>
 
-          <VLabel class="mb-1">Due Date</VLabel>
           <VRow>
-            <VCol cols="6">
+            <VCol cols="12">
+              <VueDatePicker 
+              v-model="dueDate" 
+              label="Due Date" 
+              placeholder="Due Date"
+              :rules="[requiredValidator]"
+              ignore-time-validation
+              :enable-time-picker="false"
+            />
             </VCol>
           </VRow>
         </VCardText>
