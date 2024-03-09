@@ -3,7 +3,7 @@
  - move your project in htdocs
  - and change database username and password in .env file
 
-#Open the terminal in your root directory(full-version / starter) & to install the composer packages, run the following command
+#Open the terminal in your root directory & to install the composer packages, run the following command
  - composer install
 
 #By running the following command, you will be able to get all the dependencies in your node_modules folder
