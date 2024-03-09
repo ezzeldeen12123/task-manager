@@ -1,11 +1,21 @@
 <script setup>
 import { usersApi } from "@/plugins/apis/usersRequest";
 import avatar1 from '@images/avatars/avatar-1.png';
+import { ref } from "vue";
 
 const route = useRoute()
 const router = useRouter()
 const usersRequest = usersApi()
+const userData = ref()
 const user = JSON.parse(localStorage.getItem('user') || 'null')
+const photo = ref(avatar1)
+  
+usersRequest.fetchUser(user.id).then(response => {
+  userData.value = response.data;
+  photo.value = userData.value.photo;
+}).catch(e => {
+  console.error(e)
+})
 
 const logout = () => {
   localStorage.removeItem('user')
@@ -34,7 +44,7 @@ const logout = () => {
       color="primary"
       variant="tonal"
     >
-      <VImg :src="avatar1" />
+      <VImg :src="photo" />
 
       <!-- SECTION Menu -->
       <VMenu
@@ -59,7 +69,7 @@ const logout = () => {
                     color="primary"
                     variant="tonal"
                   >
-                    <VImg :src="avatar1" />
+                    <VImg :src="photo" />
                   </VAvatar>
                 </VBadge>
               </VListItemAction>

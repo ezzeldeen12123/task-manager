@@ -10,14 +10,17 @@ const router = createRouter({
         {
           path: 'dashboard',
           component: () => import('../pages/dashboard/home.vue'),
+          meta: { requiresAuth: true }
         },
         {
           path: 'account-settings',
           component: () => import('../pages/account-settings.vue'),
+          meta: { requiresAuth: true }
         },
         {
           path: 'tasks',
           component: () => import('../pages/tasks/list/index.vue'),
+          meta: { requiresAuth: true }
         },
       ],
     },
@@ -38,7 +41,7 @@ const router = createRouter({
           path: '/:pathMatch(.*)*',
           component: () => import('../pages/[...all].vue'),
         },
-      ]
+      ],
     },
   ],
 })

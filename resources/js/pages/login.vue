@@ -14,7 +14,6 @@ const form = ref({
 const login = () => {
   usersRequest.login(form.value).then(response => {
 
-    console.log(response)
     if(response) {
       let data = response.data
       localStorage.setItem('user', JSON.stringify(data.user))
