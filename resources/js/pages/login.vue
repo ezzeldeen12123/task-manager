@@ -14,10 +14,13 @@ const form = ref({
 const login = () => {
   usersRequest.login(form.value).then(response => {
 
-    let data = response.data
-    localStorage.setItem('user', JSON.stringify(data.user))
-    localStorage.setItem('accessToken', data.token)
-    router.push('/dashboard')
+    console.log(response)
+    if(response) {
+      let data = response.data
+      localStorage.setItem('user', JSON.stringify(data.user))
+      localStorage.setItem('accessToken', data.token)
+      router.push('/dashboard')
+    }
   }).catch(e => {
     console.error(e)
   })

@@ -44,4 +44,40 @@ class User extends Authenticatable
     protected $casts = [
         'password' => 'hashed',
     ];
+    
+    public function storagePath(){
+        
+        return "public/users/user_{$this->id}";
+    }
+
+    public function saveFile($file) {
+
+        $this->deleteFile();
+        $path = $this->storagePath();
+        return $file->move(storage_path('app/'.$path), 'personal_photo.'.$file->getClientOriginalExtension());
+    }
+
+    public function urlFile() {
+
+        $fileURL = '';
+        $path = $this->storagePath();
+        $storageFiles = Storage::files($path);
+        foreach ($storageFiles as $file) {
+            $fileURL = asset(str_replace('public', 'storage', $file)). '?code=' . md5_file(storage_path('app/'.$path).'/'.basename($file));
+        }
+        return $fileURL;
+    }
+
+    public function deleteFile() {
+
+        $path = $this->storagePath();
+        $files = Storage::files($path);
+        foreach ($files as $file) {
+            $name = explode('.', basename($file));
+            if ($name[0] == 'personal_photo') {
+                Storage::delete($file);
+            }
+        }
+        return 'Deleted';
+    }
 }

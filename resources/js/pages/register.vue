@@ -25,8 +25,17 @@ const register = () => {
   refVForm.value?.validate().then(({ valid: isValid }) => {
     if(isValid) {
       usersRequest.register(form.value).then(response => {
-        snackbarRef.value.exposevisibleSnackbar('Registered Successfully', 'success');
-        router.push('/login')
+        console.log(response.data.message)
+        if(response) {
+          snackbarRef.value.exposevisibleSnackbar('Registered Successfully', 'success');
+          router.push('/login').then(() => {
+            location.reload()
+          })
+        }
+      }).catch(e => {
+        if(e && e.response && e.response.data && e.response.data.message)
+          snackbarRef.value.exposevisibleSnackbar(e.response.data.message, 'error');
+        console.error(e)
       });
     }
   })

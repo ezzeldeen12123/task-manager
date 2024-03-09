@@ -17,7 +17,8 @@ class UserController extends Controller
     }
     
     public function show(Request $request, User $user) {
-        
+
+        $user->photo = $user->urlFile();
         return $user;
     }
 
@@ -26,6 +27,10 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->email = $request->email;
         $user->save();
+
+        if($request->photo) {
+            $user->saveFile($request->photo);
+        }
         return response()->json(['user' => $user, 'message' => 'Updated Successfully', 'status' => true]);
     }
 

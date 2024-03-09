@@ -12,6 +12,7 @@ const usersRequest = usersApi()
 const userData = ref()
 const snackbarRef = ref(null);
 const refVForm = ref()
+const photo = ref('')
 const accountData = ref({
   id: '',
   name: '',
@@ -26,6 +27,7 @@ usersRequest.fetchUser(user.id).then(response => {
   accountData.value.id = userData.value.id;
   accountData.value.name = userData.value.name;
   accountData.value.email = userData.value.email;
+  accountData.value.avatarImg = userData.value.photo;
 }).catch(e => {
   console.error(e)
 })
@@ -39,6 +41,10 @@ const update = () => {
       formData.append('id', user.id);
       formData.append('name', accountData.value.name);
       formData.append('email', accountData.value.email);
+      formData.append('photo', refInputEl.value.avatarImg);
+      if(photo.value){
+        formData.append('photo', photo.value);
+      }
       
       usersRequest.updateUser(formData, user.id).then(response => {
         userData.value = response.data.user;
@@ -61,6 +67,7 @@ const changeAvatar = file => {
   const { files } = file.target
   if (files && files.length) {
     fileReader.readAsDataURL(files[0])
+    photo.value = files[0];
     fileReader.onload = () => {
       if (typeof fileReader.result === 'string')
         accountData.value.avatarImg = fileReader.result
